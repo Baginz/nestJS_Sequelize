@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
+//сервис будем внедрять в контроллер делать иньекцию
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return '<h1>Hello Egor!</h1>';
+  getUsers() {
+    return [{ id: 1, name: 'egor' }, { id: 2, name: 'vitaliy' }];
   }
 }
