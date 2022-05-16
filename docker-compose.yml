@@ -19,15 +19,13 @@ services:
     restart: always
   postgres:
     container_name: postgres
-    image: postgres:12
+    image: postgres:14.0-alpine
     env_file:
       - .production.env
-    environment:
-      PG_DATA: /var/lib/postgresql/data
     ports:
       - 5432:5432
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
     restart: always
   mongo:
     image: mongo:latest
@@ -37,5 +35,4 @@ services:
       - "27017:27017"
     restart: always
 volumes:
-  pgdata:
   mongovolume:

@@ -5,6 +5,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { RolesService } from '../roles/roles.service';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
+import { EditputUserDto } from './dto/editput-user.dto';
+import { EditpatchUserDto } from './dto/editpatch-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -18,6 +20,19 @@ export class UsersService {
     const role = await this.roleService.getRoleByValue('ADMIN');
     await user.$set('roles', [role.id]);
     user.roles = [role];
+    return user;
+  }
+
+  async deleteUser(id: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    await user.destroy();
+  }
+
+  async getOneUser(id: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (user === null) {
+      throw new HttpException('Пользователь не найдены', HttpStatus.NOT_FOUND);
+    }
     return user;
   }
 
@@ -37,6 +52,7 @@ export class UsersService {
   async addRole(dto: AddRoleDto) {
     const user = await this.userRepository.findByPk(dto.userId);
     const role = await this.roleService.getRoleByValue(dto.value);
+
     if (role && user) {
       await user.$add('role', role.id);
       return dto;
@@ -56,5 +72,15 @@ export class UsersService {
     user.banReason = dto.banReason;
     await user.save();
     return user;
+  }
+
+  async editUserPut(dto: EditputUserDto, id: string) {
+    const user = await this.userRepository.findByPk(id);
+    await user.update(dto);
+  }
+
+  async editUserPatch(dto: EditpatchUserDto, id: string) {
+    const user = await this.userRepository.findByPk(id);
+    await user.update({ ...user, ...dto });
   }
 }

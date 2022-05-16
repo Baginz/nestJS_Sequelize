@@ -1,8 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Patch,
   Post,
+  Put,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
@@ -16,6 +20,8 @@ import { RolesGuard } from '../auth/roles.guard';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
 import { ValidationPipe } from '../pipes/validation.pipe';
+import { EditputUserDto } from './dto/editput-user.dto';
+import { EditpatchUserDto } from './dto/editpatch-user.dto';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -29,6 +35,13 @@ export class UsersController {
     return this.usersService.createUser(userDto);
   }
 
+  @ApiOperation({ summary: 'Удаление пользователя' })
+  @ApiResponse({ status: 200, type: User })
+  @Delete('/:id')
+  delete(@Param('id') id: string) {
+    return this.usersService.deleteUser(id);
+  }
+
   @ApiOperation({ summary: 'Получить всех пользователей' })
   @ApiResponse({ status: 200, type: [User] })
   @Roles('ADMIN')
@@ -38,13 +51,40 @@ export class UsersController {
     return this.usersService.getAllUsers();
   }
 
+  @ApiOperation({ summary: 'Получить пользовател' })
+  @ApiResponse({ status: 200, type: User })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Get('/:id')
+  getOne(@Param('id') id: string) {
+    return this.usersService.getOneUser(id);
+  }
+
+  @ApiOperation({ summary: 'Изменить пользовател' })
+  @ApiResponse({ status: 200, type: User })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Put('/:id')
+  editPut(@Body() userDto: EditputUserDto, @Param('id') id: string) {
+    return this.usersService.editUserPut(userDto, id);
+  }
+
+  @ApiOperation({ summary: 'Изменить пользовател' })
+  @ApiResponse({ status: 200, type: User })
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Patch('/:id')
+  editPatch(@Body() userDto: EditpatchUserDto, @Param('id') id: string) {
+    return this.usersService.editUserPatch(userDto, id);
+  }
+
   @ApiOperation({ summary: 'Выдать роль' })
   @ApiResponse({ status: 200 })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Post('/role')
-  addRole(@Body() dto: AddRoleDto) {
-    return this.usersService.addRole(dto);
+  addRole(@Body() userDto: AddRoleDto) {
+    return this.usersService.addRole(userDto);
   }
 
   @ApiOperation({ summary: 'Забанить пользователя' })
@@ -52,7 +92,7 @@ export class UsersController {
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Post('/ban')
-  ban(@Body() dto: BanUserDto) {
-    return this.usersService.ban(dto);
+  ban(@Body() userDto: BanUserDto) {
+    return this.usersService.ban(userDto);
   }
 }
