@@ -30,6 +30,7 @@ export class UsersController {
 
   @ApiOperation({ summary: 'Создание пользователя' })
   @ApiResponse({ status: 200, type: User })
+  @UsePipes(new ValidationPipe())
   @Post()
   create(@Body() userDto: CreateUserDto) {
     return this.usersService.createUser(userDto);
@@ -64,6 +65,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @UsePipes(new ValidationPipe())
   @Put('/:id')
   editPut(@Body() userDto: EditputUserDto, @Param('id') id: string) {
     return this.usersService.editUserPut(userDto, id);
@@ -73,6 +75,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @UsePipes(new ValidationPipe())
   @Patch('/:id')
   editPatch(@Body() userDto: EditpatchUserDto, @Param('id') id: string) {
     return this.usersService.editUserPatch(userDto, id);
@@ -82,6 +85,7 @@ export class UsersController {
   @ApiResponse({ status: 200 })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @UsePipes(new ValidationPipe())
   @Post('/role')
   addRole(@Body() userDto: AddRoleDto) {
     return this.usersService.addRole(userDto);
@@ -91,6 +95,7 @@ export class UsersController {
   @ApiResponse({ status: 200 })
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
+  @UsePipes(new ValidationPipe())
   @Post('/ban')
   ban(@Body() userDto: BanUserDto) {
     return this.usersService.ban(userDto);
