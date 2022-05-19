@@ -40,7 +40,7 @@ export class UsersController {
   @ApiResponse({ status: 200, type: User })
   @Delete('/:id')
   delete(@Param('id') id: string) {
-    return this.usersService.deleteUser(id);
+    return this.usersService.deleteUser(+id);
   }
 
   @ApiOperation({ summary: 'Получить всех пользователей' })
@@ -58,7 +58,7 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Get('/:id')
   getOne(@Param('id') id: string) {
-    return this.usersService.getOneUser(id);
+    return this.usersService.getOneUser(+id);
   }
 
   @ApiOperation({ summary: 'Изменить пользовател' })
@@ -68,7 +68,7 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   @Put('/:id')
   editPut(@Body() userDto: EditputUserDto, @Param('id') id: string) {
-    return this.usersService.editUserPut(userDto, id);
+    return this.usersService.editUserPut(userDto, +id);
   }
 
   @ApiOperation({ summary: 'Изменить пользовател' })
@@ -78,7 +78,7 @@ export class UsersController {
   @UsePipes(new ValidationPipe())
   @Patch('/:id')
   editPatch(@Body() userDto: EditpatchUserDto, @Param('id') id: string) {
-    return this.usersService.editUserPatch(userDto, id);
+    return this.usersService.editUserPatch(userDto, +id);
   }
 
   @ApiOperation({ summary: 'Выдать роль' })

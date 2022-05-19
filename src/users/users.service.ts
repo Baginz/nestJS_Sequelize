@@ -23,12 +23,12 @@ export class UsersService {
     return user;
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: number) {
     const user = await this.userRepository.findOne({ where: { id } });
     await user.destroy();
   }
 
-  async getOneUser(id: string) {
+  async getOneUser(id: number) {
     const user = await this.userRepository.findOne({
       where: { id },
       include: { all: true },
@@ -77,12 +77,12 @@ export class UsersService {
     return user;
   }
 
-  async editUserPut(dto: EditputUserDto, id: string) {
+  async editUserPut(dto: EditputUserDto, id: number) {
     const user = await this.userRepository.findByPk(id);
     await user.update(dto);
   }
 
-  async editUserPatch(dto: EditpatchUserDto, id: string) {
+  async editUserPatch(dto: EditpatchUserDto, id: number) {
     const user = await this.userRepository.findByPk(id);
     await user.update({ ...user, ...dto });
   }
