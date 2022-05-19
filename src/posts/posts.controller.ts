@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -17,5 +18,10 @@ export class PostsController {
   @UseInterceptors(FileInterceptor('image'))
   createPost(@Body() dto: CreatePostDto, @UploadedFile() image) {
     return this.postService.create(dto, image);
+  }
+
+  @Get()
+  getPosts() {
+    return this.postService.getAllPosts();
   }
 }

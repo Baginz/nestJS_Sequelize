@@ -29,7 +29,10 @@ export class UsersService {
   }
 
   async getOneUser(id: string) {
-    const user = await this.userRepository.findOne({ where: { id } });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      include: { all: true },
+    });
     if (user === null) {
       throw new HttpException('Пользователь не найдены', HttpStatus.NOT_FOUND);
     }
