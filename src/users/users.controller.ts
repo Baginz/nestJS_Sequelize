@@ -22,6 +22,7 @@ import { BanUserDto } from './dto/ban-user.dto';
 import { ValidationPipe } from '../pipes/validation.pipe';
 import { EditputUserDto } from './dto/editput-user.dto';
 import { EditpatchUserDto } from './dto/editpatch-user.dto';
+import { UserFromReq } from '../decorators/userfromreq.decorator';
 
 @ApiTags('Пользователи')
 @Controller('users')
@@ -48,8 +49,8 @@ export class UsersController {
   @Roles('ADMIN')
   @UseGuards(RolesGuard)
   @Get()
-  getAll() {
-    return this.usersService.getAllUsers();
+  getAll(@UserFromReq() user) {
+    return this.usersService.getAllUsers(user);
   }
 
   @ApiOperation({ summary: 'Получить пользовател' })
