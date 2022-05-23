@@ -39,11 +39,13 @@ services:
     env_file:
       - .production.env
   mongo:
+    container_name: mongo
     image: mongo:latest
     volumes:
       - mongovolume:/data/db/mongo
     ports:
       - "27017:27017"
     restart: always
+#    restart: on-failure
 volumes:
   mongovolume:

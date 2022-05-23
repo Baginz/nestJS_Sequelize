@@ -31,6 +31,8 @@ import * as path from 'path';
       models: [User, Role, UserRoles, Post],
       //сам создавал таблицы в бд на основании наших моделей
       autoLoadModels: true,
+      //убрать в продакшне
+      synchronize: true,
     }),
     UsersModule,
     RolesModule,
